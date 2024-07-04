@@ -40,6 +40,57 @@ function App() {
     fetchItems();
   }, []);
 
+  async function handleDelete(id) {
+    try {
+      const deletedItems = Items.find((item) => {
+        item.id === id;
+      });
+      if (!deletedItems) throw new Error("Error deleted item not found");
+      const response = await fetch(`${Api_url}/Items/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        const responseText = await response.text();
+        throw new Error(`Network error was not ok: ${responseText}`);
+      }
+
+      const filteredItems = Items.filter((item) => item.id !== id);
+      setItems(filteredItems);
+    } catch (error) {
+      console.error(error);
+      setFetchError(error.message);
+    }
+  }
+
+  async function handleCheck(id) {
+    try {
+      const updatedItem = Items.find((item) => {
+        item.id === id;
+      });
+
+      if (!updatedItem) throw new Error("Error updated item not found");
+      const response = await fetch(`${Api_url}/Items/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ checked: !updatedItem.checked }),
+      });
+      if (!response.ok) {
+        const responseText = await response.text();
+        throw new Error(`Network error was not ok: ${responseText}`);
+      }
+
+      const updatedItems = Items.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      );
+      setItems(updatedItem);
+    } catch (error) {
+      console.error(error);
+      setFetchError(error.message);
+    }
+  }
+
   console.log(search);
 
   return (
@@ -55,6 +106,8 @@ function App() {
             items={Items.filter((item) =>
               item.item.toLowerCase().includes(search.toLowerCase())
             )}
+            handleDelete={handleDelete}
+            handleCheck={handleCheck}
           />
         )}
       </main>
