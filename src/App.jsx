@@ -19,7 +19,7 @@ function App() {
         const response = await fetch(`${Api_url}/Items`);
         if (!response.ok) {
           const responseText = await response.text();
-          throw new Error("Network error was not ok");
+          throw new Error(`Network error was not ok:${responseText}`);
         }
 
         const newItem = await response.json();
@@ -84,7 +84,7 @@ function App() {
       const updatedItems = Items.map((item) =>
         item.id === id ? { ...item, checked: !item.checked } : item
       );
-      setItems(updatedItem);
+      setItems(updatedItems);
     } catch (error) {
       console.error(error);
       setFetchError(error.message);
