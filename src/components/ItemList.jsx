@@ -7,10 +7,8 @@ const ItemList = ({ items, handleCheck, handleDelete }) => {
         <ListItem
           key={item.id}
           item={item}
-          handleCheck={() => {
-            handleCheck(item.id);
-          }}
-          handleDelete={() => handleDelete(item.id)}
+          handleCheck={handleCheck}
+          handleDelete={handleDelete}
         />
       ))}
     </ul>
