@@ -6,14 +6,12 @@ const ListItem = ({ item, handleCheck, handleDelete }) => {
       <input type="checkbox" />
       <label
         style={item.checked ? { textDecoration: "line-through" } : null}
-        onDoubleClick={() => {}}
+        onDoubleClick={() => handleCheck(item.id)}
       >
         {item.item}
       </label>
       <FaTrashAlt
-        onClick={() => {
-          handleDelete(item.id);
-        }}
+        onClick={() => handleDelete(item.id)}
         role="button"
         tabIndex="0"
         aria-label={`Delete ${item.item}`}
